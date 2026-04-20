@@ -140,6 +140,30 @@ If headless Pi cannot run because provider/auth is unavailable, use the same `TE
 
 ---
 
+## Latest local smoke result
+
+- **Validator command:** `npm run validate:phase-01`
+- **Recovered test project:** `/var/folders/cl/f_zzvq0n4l7gj362k9dgpcmc0000gn/T/pi-code-reviewer-test-project-2n6dMH`
+- **Recovered package directory:** `/var/folders/cl/f_zzvq0n4l7gj362k9dgpcmc0000gn/T/pi-code-reviewer-unpack-UyGGe7/package`
+- **Prompt file:** `$TEST_PROJECT/.phase-01-smoke-prompt.txt`
+
+Exact smoke command used:
+
+```bash
+(cd "$TEST_PROJECT" && pi --no-session -p "$(cat "$TEST_PROJECT/.phase-01-smoke-prompt.txt")")
+```
+
+Observed result:
+
+```text
+PHASE_1_PACKAGE_MARKER: pi-code-reviewer
+Package name: pi-code-reviewer
+```
+
+Result: **PASS** — output contained both `PHASE_1_PACKAGE_MARKER: pi-code-reviewer` and `pi-code-reviewer`, so the validated local `pi install -l` flow resolved this package's shipped skill.
+
+---
+
 ## Registry Validation (Plan 01-04)
 
 Real npm-registry completion remains pending until Plan `01-04` publishes the `package.json` version and verifies both install paths against the registry.
