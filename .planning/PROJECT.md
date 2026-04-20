@@ -14,19 +14,18 @@ A Pi user can run one skill against a codebase and immediately get a reliable, p
 
 <!-- Shipped and confirmed valuable. -->
 
-(None yet - ship to validate)
+- [x] User can install the package via npm or a `pi install ...` command. Validated in Phase 1: Package Foundation
+- [x] User can invoke the package as a Pi skill via `/skill`. Validated in Phase 2: Skill Workflow Contract
+- [x] User receives a concise markdown review with sections for Code Quality, Refactoring, Documentation, Security, and Test Coverage. Validated in Phase 2: Skill Workflow Contract
+- [x] User receives generated review artifacts in `.planning/`, including `REVIEW.md` and a markdown checklist TODO file grouped by category. Validated in Phase 2: Skill Workflow Contract
 
 ### Active
 
 <!-- Current scope. Building toward these. -->
 
-- [ ] User can install the package via npm or a `pi install ...` command.
-- [ ] User can invoke the package as a Pi skill via `/skill`.
 - [ ] User can review either the whole repository or a changed-files-focused slice when git context exists.
-- [ ] User receives a concise markdown review with sections for Code Quality, Refactoring, Documentation, Security, and Test Coverage.
 - [ ] User receives actionable findings with file/path references.
 - [ ] User receives a prioritized issue table by priority/severity to help choose what to fix next.
-- [ ] User receives generated review artifacts in `.planning/`, including `REVIEW.md` and a markdown checklist TODO file grouped by category.
 - [ ] The review experience works across typical codebases without being limited to a single language ecosystem in v1.
 
 ### Out of Scope

@@ -13,7 +13,7 @@ Pi Code Reviewer will ship as a skill-first Pi package that users can install vi
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Package Foundation** - Make the package artifact-installable and discoverable as a Pi skill.
-- [ ] **Phase 2: Skill Workflow Contract** - Define the `/skill:code-reviewer` experience and fixed report structure.
+- [x] **Phase 2: Skill Workflow Contract** - Define the `/skill:code-reviewer` experience and fixed report structure.
 - [ ] **Phase 3: Review Scope Modes** - Support whole-repo and changed-files-focused review with explicit mode reporting.
 - [ ] **Phase 4: Analysis Engine** - Produce evidence-based findings across the five review categories.
 - [ ] **Phase 5: Actionable Outputs & Release Readiness** - Generate prioritized artifacts users can act on immediately, then finish final npm release verification.
@@ -46,9 +46,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Author the core SKILL.md workflow and supporting reference docs.
-- [ ] 02-02: Create reusable REVIEW/TODO templates and report contract guidance.
-- [ ] 02-03: Validate invocation flow and structured output skeleton on sample repos.
+- [x] 02-01: Author the core SKILL.md workflow and supporting reference docs.
+- [x] 02-02: Create reusable REVIEW/TODO templates and report contract guidance.
+- [x] 02-03: Validate invocation flow and structured output skeleton on sample repos.
 
 ### Phase 3: Review Scope Modes
 **Goal**: Users can review either the whole repository or current changes and understand which mode was used.
@@ -106,7 +106,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 | ----- | -------------- | ------ | --------- |
 | 1. Package Foundation | 3/3 | Awaiting verification | - |
-| 2. Skill Workflow Contract | 0/3 | Not started | - |
+| 2. Skill Workflow Contract | 3/3 | ✓ Complete | 2026-04-20 |
 | 3. Review Scope Modes | 0/3 | Not started | - |
 | 4. Analysis Engine | 0/3 | Not started | - |
 | 5. Actionable Outputs & Release Readiness | 0/4 | Not started | - |
