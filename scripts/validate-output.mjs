@@ -6,6 +6,9 @@ const reviewArg = process.argv[2] || '.planning/REVIEW.md';
 const reviewPath = path.resolve(root, reviewArg);
 const todoPath = path.join(path.dirname(reviewPath), 'REVIEW-TODO.md');
 const categories = ['Code Quality', 'Refactoring', 'Documentation', 'Security', 'Test Coverage'];
+const wholeRepoScopePattern = /^\*\*Scope:\*\* Whole repository$/m;
+const changedFilesScopePattern = /^\*\*Scope:\*\* Changed files — \d+ files modified \((branch diff against [^)]+|uncommitted changes|last commit)\)$/m;
+const gitFallbackNotePattern = /^> \*\*Note:\*\* Git metadata unavailable — falling back to whole-repo review\.$/m;
 
 function fail(message) {
   console.error(`✗ ${message}`);
@@ -18,6 +21,16 @@ function assert(condition, message) {
 
 assert(fs.existsSync(reviewPath), `Missing required file: ${path.relative(root, reviewPath) || path.basename(reviewPath)}`);
 const review = fs.readFileSync(reviewPath, 'utf8');
+
+assert(review.includes('# Code Review:'), 'REVIEW.md must start with a Code Review header');
+assert(/^\*\*Date:\*\*/m.test(review), 'REVIEW.md must contain a **Date:** line');
+assert(wholeRepoScopePattern.test(review) || changedFilesScopePattern.test(review), 'REVIEW.md must contain a valid scope header');
+
+const hasFallbackNote = review.includes('Git metadata unavailable — falling back to whole-repo review.');
+if (hasFallbackNote) {
+  assert(gitFallbackNotePattern.test(review), 'Fallback note must exactly match the Phase 3 output contract wording');
+  assert(wholeRepoScopePattern.test(review), 'Fallback note is only valid with whole-repo scope');
+}
 
 for (const category of categories) {
   assert(review.includes(`## ${category}`), `REVIEW.md must contain ## ${category} section`);

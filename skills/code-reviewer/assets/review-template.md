@@ -25,6 +25,8 @@ This template provides guidance for the shape of `.planning/REVIEW.md`. Use it a
 **Scope:** Changed files — 2 files modified (uncommitted changes)
 ```
 
+When exactly one file is in scope, still use `**Scope:** Changed files — 1 files modified (uncommitted changes)`.
+
 Use this header only for the documented edge case where no usable default-branch comparison exists and the repo is otherwise clean.
 
 ```markdown

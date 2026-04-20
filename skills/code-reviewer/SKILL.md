@@ -26,6 +26,7 @@ Only use `last commit` as an edge-case fallback when the default branch cannot b
 If the current branch matches the resolved default branch and there are no uncommitted changes, choose whole-repo mode instead of `last commit`.
 Print `◆ Determining review scope... → Changed files (<diff source>)` when changed-files mode wins, or `◆ Determining review scope... → Whole repository` when whole-repo mode wins.
 If git metadata is unavailable, invalid, or yields no readable paths, fall back silently to whole-repo mode and preserve the fallback note for the report header.
+If `HEAD` does not exist yet, treat the repo as a git-metadata fallback case rather than changed-files mode.
 When inside a git work tree, use the reference doc's git commands to build candidate paths; when outside git, use the existing find/ls mapping fallback.
 Confirm where review outputs will be written: .planning/REVIEW.md and .planning/REVIEW-TODO.md.
 

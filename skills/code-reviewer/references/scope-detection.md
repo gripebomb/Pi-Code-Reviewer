@@ -18,10 +18,11 @@
 6. A clean repo with a usable default-branch comparison stops at whole-repo mode and does not continue to last commit.
 7. Only use last commit when the default branch cannot be resolved or compared, the repo is otherwise clean, and HEAD~1 exists.
 8. For the last commit edge-case candidate set, run `git diff --name-only --diff-filter=ACMR HEAD~1 HEAD`.
-9. For whole-repo enumeration inside git repos, run `git ls-files --cached --others --exclude-standard`.
-10. For non-git fallback, use the existing `find` + `ls` mapping flow.
+9. If `git rev-parse --verify HEAD` fails because the repo has no commits, treat git metadata as unavailable for scope selection: choose whole-repo mode, set `diff_source` to `null`, and preserve the fallback note.
+10. For whole-repo enumeration inside git repos, run `git ls-files --cached --others --exclude-standard`.
+11. For non-git fallback, use the existing `find` + `ls` mapping flow.
 
-When git metadata is available, treat nonignored untracked files as part of the uncommitted changes candidate set while keeping the reported diff source as `uncommitted changes`.
+When git metadata is available and `HEAD` exists, treat nonignored untracked files as part of the uncommitted changes candidate set while keeping the reported diff source as `uncommitted changes`.
 
 ## Traversal Filters
 
@@ -63,7 +64,10 @@ When git is available, `.gitignore` is the primary filter. After that, apply thi
 - `**Scope:** Whole repository`
 - `**Scope:** Changed files — 7 files modified (branch diff against main)`
 - `**Scope:** Changed files — 2 files modified (uncommitted changes)`
+- `**Scope:** Changed files — 1 files modified (uncommitted changes)`
 - `**Scope:** Changed files — 3 files modified (last commit)`
 - `> **Note:** Git metadata unavailable — falling back to whole-repo review.`
+
+Use the literal phrase `files modified` for changed-files headers even when the count is 1.
 
 Clean default-branch repos that produce no branch diff and no uncommitted candidate paths must stop at whole-repo mode rather than continuing into `last commit`.

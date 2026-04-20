@@ -33,6 +33,7 @@ The report at `.planning/REVIEW.md` must follow this structure.
 - File count is based on the final filtered readable candidate-path set, not the raw diff output.
 - Deleted files are excluded from the count and must not be treated as reviewable evidence targets.
 - Use one of these diff-source values only: branch diff against <default branch>, uncommitted changes, last commit.
+- Use the literal phrase `files modified` for changed-files headers even when the count is 1.
 - A clean repo with a usable default-branch comparison must render `**Scope:** Whole repository` and must not fall through to `last commit`.
 - Use `last commit` only for the documented edge case where no usable default-branch comparison exists and the repo is otherwise clean.
 - Keep the fallback note on its own blockquote line; do not append it to the Scope line.
