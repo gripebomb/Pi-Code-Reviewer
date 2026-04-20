@@ -1,0 +1,14 @@
+{
+  "name": "pi-code-reviewer",
+  "version": "0.1.0",
+  "description": "Pi-installable code review skill package.",
+  "keywords": ["pi-package", "pi", "skill", "code-review"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": ["README.md", "skills/"],
+  "pi": {
+    "skills": ["./skills"]
+  }
+}
