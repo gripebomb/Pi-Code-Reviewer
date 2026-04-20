@@ -18,10 +18,16 @@ Print the status message at the start of each phase so the user can follow progr
 
 ◆ Determining review scope...
 
-Review the entire repository by default.
-Phase 3 adds scope mode selection, but for now you should assess the whole repo.
-Use `find`, `ls`, and `read` to map the repository structure, major directories, key configs, test locations, and documentation entry points.
-Confirm where review outputs will be written: `.planning/REVIEW.md` and `.planning/REVIEW-TODO.md`.
+Before mapping files, read references/scope-detection.md for the exact detection algorithm, git commands, skip-list rules, and header wording.
+Auto-detect the review scope from git state without asking the user or requiring a flag.
+Resolve and preserve this scope state exactly: `mode`, `diff_source`, `candidate_paths`, `file_count`, `fallback_note`.
+Use this detection order: branch diff against the default branch, uncommitted changes (tracked plus nonignored untracked files), then whole-repo when those comparable current-state checks are empty.
+Only use `last commit` as an edge-case fallback when the default branch cannot be resolved or compared, the repo is otherwise clean, and `HEAD~1` exists.
+If the current branch matches the resolved default branch and there are no uncommitted changes, choose whole-repo mode instead of `last commit`.
+Print `◆ Determining review scope... → Changed files (<diff source>)` when changed-files mode wins, or `◆ Determining review scope... → Whole repository` when whole-repo mode wins.
+If git metadata is unavailable, invalid, or yields no readable paths, fall back silently to whole-repo mode and preserve the fallback note for the report header.
+When inside a git work tree, use the reference doc's git commands to build candidate paths; when outside git, use the existing find/ls mapping fallback.
+Confirm where review outputs will be written: .planning/REVIEW.md and .planning/REVIEW-TODO.md.
 
 ## Phase 2: Gather Evidence
 
@@ -31,6 +37,7 @@ Read representative source files, configuration, tests, scripts, and docs.
 Build an evidence-based understanding of the project structure, technology stack, code patterns, testing story, documentation quality, and security-relevant configuration.
 Look for concrete file paths, symbols, and examples that support later findings.
 Prefer breadth first, then go deeper where code appears risky, central, fragile, or under-documented.
+Phase 2 gathers evidence from the resolved `candidate_paths` and only expands outside that set for minimal surrounding context needed to explain a finding.
 
 ## Phase 3: Evaluate Categories
 
@@ -90,13 +97,15 @@ If `.planning/REVIEW.md` already existed before this run, add a note at the top 
 - **Conversational tone:** Explain what the issue is, why it matters, and what the likely impact is in natural language.
 - **File references:** Include concrete file or path references wherever evidence supports them.
 - **Evidence over guesswork:** If evidence is limited, say that clearly instead of inventing certainty.
-- **Whole-repo review:** Unless later phases change the workflow, inspect the whole repository rather than a narrow slice.
+- **Respect detected review scope:** Use the resolved `candidate_paths` as the review surface. In changed-files mode, only expand outside the set for minimal surrounding context needed to explain a finding.
+- **Carry scope metadata forward:** Use `mode`, `diff_source`, `file_count`, and `fallback_note` unchanged when writing the report header.
 
 ## Reference Docs
 
 - `references/review-rubric.md` — detailed evaluation criteria for each category
 - `references/severity-guidelines.md` — how to classify High, Medium, and Low findings
 - `references/output-contract.md` — exact report structure and formatting rules
+- `references/scope-detection.md` — ordered scope detection, default-branch comparison rules, edge-case last-commit fallback, traversal filters, and scope header wording
 - `references/INSTALL.md` — installation instructions and smoke-test steps
 - `assets/review-template.md` — report shape guidance and example
 - `assets/todo-template.md` — TODO checklist shape guidance and example
