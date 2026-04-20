@@ -74,7 +74,6 @@ const output = {
   packageDir,
   testProject,
   packageName: 'pi-code-reviewer',
-  expectedMarker: 'PHASE_1_PACKAGE_MARKER: pi-code-reviewer',
 };
 
 fs.writeFileSync(validationRunPath, `${JSON.stringify(output, null, 2)}\n`);

@@ -8,7 +8,12 @@ const requiredFiles = [
   'skills/code-reviewer/SKILL.md',
   'skills/code-reviewer/references/README.md',
   'skills/code-reviewer/references/INSTALL.md',
+  'skills/code-reviewer/references/review-rubric.md',
+  'skills/code-reviewer/references/severity-guidelines.md',
+  'skills/code-reviewer/references/output-contract.md',
   'skills/code-reviewer/assets/README.md',
+  'skills/code-reviewer/assets/review-template.md',
+  'skills/code-reviewer/assets/todo-template.md',
 ];
 
 function fail(message) {
@@ -43,7 +48,17 @@ assert(pkg.scripts?.['validate:phase-01'] === 'node scripts/validate-phase-01.mj
 const skill = readFile('skills/code-reviewer/SKILL.md');
 assert(skill.includes('name: code-reviewer'), 'SKILL.md must contain name: code-reviewer');
 assert(skill.includes('description:'), 'SKILL.md must contain a description line');
-assert(skill.includes('/skill:code-reviewer'), 'SKILL.md must mention /skill:code-reviewer');
-assert(skill.includes('PHASE_1_PACKAGE_MARKER: pi-code-reviewer'), 'SKILL.md must contain the exact Phase 1 marker');
+assert(skill.includes('## Phase 1: Determine Scope'), 'SKILL.md must contain Phase 1: Determine Scope heading');
+assert(skill.includes('## Phase 2: Gather Evidence'), 'SKILL.md must contain Phase 2: Gather Evidence heading');
+assert(skill.includes('## Phase 3: Evaluate Categories'), 'SKILL.md must contain Phase 3: Evaluate Categories heading');
+assert(skill.includes('## Phase 4: Prioritize Findings'), 'SKILL.md must contain Phase 4: Prioritize Findings heading');
+assert(skill.includes('## Phase 5: Write Report'), 'SKILL.md must contain Phase 5: Write Report heading');
+assert(skill.includes('references/review-rubric.md'), 'SKILL.md must instruct loading references/review-rubric.md');
+assert(skill.includes('references/severity-guidelines.md'), 'SKILL.md must instruct loading references/severity-guidelines.md');
+assert(skill.includes('references/output-contract.md'), 'SKILL.md must instruct loading references/output-contract.md');
+assert(skill.includes('assets/review-template.md'), 'SKILL.md must instruct loading assets/review-template.md');
+assert(skill.includes('assets/todo-template.md'), 'SKILL.md must instruct loading assets/todo-template.md');
+assert(skill.includes('.planning/REVIEW.md'), 'SKILL.md must reference .planning/REVIEW.md output path');
+assert(skill.includes('.planning/REVIEW-TODO.md'), 'SKILL.md must reference .planning/REVIEW-TODO.md output path');
 
 console.log('✓ validate:metadata passed');
