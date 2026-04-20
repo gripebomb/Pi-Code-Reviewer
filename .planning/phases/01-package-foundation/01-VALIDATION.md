@@ -43,7 +43,7 @@ updated: 2026-04-20
 | `01-02-01` | 02 | 2 | DIST-03 | docs contract | `npm run validate:docs` | ✅ | ✅ green |
 | `01-03-01` | 03 | 3 | DIST-01 | packed artifact + local Pi install | `npm run validate:phase-01` | ✅ | ✅ green |
 | `01-03-02` | 03 | 3 | DIST-02 | local discovery smoke handoff | `npm run validate:phase-01` + recorded `testProject` reuse from `01-VALIDATION-RUN.json` | ✅ | ✅ ready |
-| `01-04-01` | 04 | 4 | DIST-01 / DIST-02 | registry publish + registry install | registry commands recorded below after publish | ⚠ pending | ⬜ pending |
+| `05-04-01` | 05-04 | final release | DIST-01 | registry publish + registry install | registry commands recorded below after publish | ⚠ deferred | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠ blocked*
 
@@ -164,9 +164,9 @@ Result: **PASS** — output contained both `PHASE_1_PACKAGE_MARKER: pi-code-revi
 
 ---
 
-## Registry Validation (Plan 01-04)
+## Registry Validation (Deferred to final release phase)
 
-Real npm-registry completion remains pending until Plan `01-04` publishes the `package.json` version and verifies both install paths against the registry.
+Real npm-registry completion is intentionally deferred until the final release phase, when the finished package version will be published and verified against registry-backed npm and Pi installs.
 
 Required registry evidence:
 

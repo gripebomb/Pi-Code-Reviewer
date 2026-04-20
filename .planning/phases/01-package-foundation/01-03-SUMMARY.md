@@ -80,7 +80,7 @@ None - no external service configuration required.
 
 ## Next Phase Readiness
 - Phase 1 now has real local artifact/install/discovery evidence anchored to the packaged tarball.
-- The remaining completion work is externalized to registry publication and registry-backed install verification in Plan 01-04.
+- Final registry publication and registry-backed install verification are deferred to the project's release-readiness phase.
 
 ---
 *Phase: 01-package-foundation*

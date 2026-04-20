@@ -31,6 +31,8 @@ must_haves:
       via: "registry smoke evidence proves the published skill is this package's skill"
 ---
 
+> Deferred on 2026-04-20: roadmap updated to postpone npm publish and registry verification until the final release phase. This file is kept as historical draft context and is intentionally not an active `*-PLAN.md` execution target.
+
 <objective>
 Complete Phase 1 by publishing the canonical package and verifying real registry installs.
 

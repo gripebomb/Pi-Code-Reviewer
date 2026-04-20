@@ -76,7 +76,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 | ----------- | ----- | ------ |
-| DIST-01 | Phase 1 | Pending |
+| DIST-01 | Phase 5 | Pending |
 | DIST-02 | Phase 1 | Pending |
 | DIST-03 | Phase 1 | Pending |
 | INVK-01 | Phase 2 | Pending |
@@ -102,4 +102,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-04-19*
-*Last updated: 2026-04-19 after initial definition*
+*Last updated: 2026-04-20 after deferring npm publish to final release*
