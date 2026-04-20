@@ -16,9 +16,9 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Invocation
 
 - [ ] **INVK-01**: User can invoke the review workflow with `/skill:code-reviewer` after installing the package.
-- [ ] **INVK-02**: User can run a whole-repository review.
-- [ ] **INVK-03**: User can run a changed-files-focused review when git information is available.
-- [ ] **INVK-04**: User can see which review mode was used in the generated report.
+- [x] **INVK-02**: User can run a whole-repository review.
+- [x] **INVK-03**: User can run a changed-files-focused review when git information is available.
+- [x] **INVK-04**: User can see which review mode was used in the generated report.
 
 ### Analysis
 
@@ -81,9 +81,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DIST-03 | Phase 1 | Pending |
 | INVK-01 | Phase 2 | Verified |
 | RPRT-01 | Phase 2 | Verified |
-| INVK-02 | Phase 3 | Pending |
-| INVK-03 | Phase 3 | Pending |
-| INVK-04 | Phase 3 | Pending |
+| INVK-02 | Phase 3 | Verified |
+| INVK-03 | Phase 3 | Verified |
+| INVK-04 | Phase 3 | Verified |
 | ANLY-01 | Phase 4 | Pending |
 | ANLY-02 | Phase 4 | Pending |
 | ANLY-03 | Phase 4 | Pending |
@@ -102,4 +102,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-04-19*
-*Last updated: 2026-04-20 after Phase 2 verification*
+*Last updated: 2026-04-20 after Phase 3 verification*

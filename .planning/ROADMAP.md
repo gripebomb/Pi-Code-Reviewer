@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Package Foundation** - Make the package artifact-installable and discoverable as a Pi skill.
 - [x] **Phase 2: Skill Workflow Contract** - Define the `/skill:code-reviewer` experience and fixed report structure.
-- [ ] **Phase 3: Review Scope Modes** - Support whole-repo and changed-files-focused review with explicit mode reporting.
+- [x] **Phase 3: Review Scope Modes** - Support whole-repo and changed-files-focused review with explicit mode reporting.
 - [ ] **Phase 4: Analysis Engine** - Produce evidence-based findings across the five review categories.
 - [ ] **Phase 5: Actionable Outputs & Release Readiness** - Generate prioritized artifacts users can act on immediately, then finish final npm release verification.
 
@@ -61,9 +61,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Implement review mode selection rules and optional git-aware scope detection.
-- [ ] 03-02: Define repo traversal heuristics and exclusions for large/noisy codebases.
-- [ ] 03-03: Test mode selection and fallback behavior across fixture repositories.
+- [x] 03-01: Implement review mode selection rules and optional git-aware scope detection.
+- [x] 03-02: Reconcile the fallback policy and publish the canonical scope contract.
+- [x] 03-03: Validate scope-mode behavior against real fixture repositories.
 
 ### Phase 4: Analysis Engine
 **Goal**: Users receive evidence-based findings across all five requested review categories.
@@ -107,6 +107,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | ----- | -------------- | ------ | --------- |
 | 1. Package Foundation | 3/3 | Awaiting verification | - |
 | 2. Skill Workflow Contract | 3/3 | ✓ Complete | 2026-04-20 |
-| 3. Review Scope Modes | 0/3 | Not started | - |
-| 4. Analysis Engine | 0/3 | Not started | - |
+| 3. Review Scope Modes | 3/3 | ✓ Complete | 2026-04-20 |
+| 4. Analysis Engine | 0/3 | Ready | - |
 | 5. Actionable Outputs & Release Readiness | 0/4 | Not started | - |

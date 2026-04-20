@@ -18,12 +18,12 @@ A Pi user can run one skill against a codebase and immediately get a reliable, p
 - [x] User can invoke the package as a Pi skill via `/skill`. Validated in Phase 2: Skill Workflow Contract
 - [x] User receives a concise markdown review with sections for Code Quality, Refactoring, Documentation, Security, and Test Coverage. Validated in Phase 2: Skill Workflow Contract
 - [x] User receives generated review artifacts in `.planning/`, including `REVIEW.md` and a markdown checklist TODO file grouped by category. Validated in Phase 2: Skill Workflow Contract
+- [x] User can review either the whole repository or a changed-files-focused slice when git context exists, and the generated report states which scope mode ran. Validated in Phase 3: Review Scope Modes
 
 ### Active
 
 <!-- Current scope. Building toward these. -->
 
-- [ ] User can review either the whole repository or a changed-files-focused slice when git context exists.
 - [ ] User receives actionable findings with file/path references.
 - [ ] User receives a prioritized issue table by priority/severity to help choose what to fix next.
 - [ ] The review experience works across typical codebases without being limited to a single language ecosystem in v1.
@@ -62,7 +62,7 @@ The user wants generated artifacts, not just terminal output. In v1, the report 
 | Package will be distributed through npm and Pi install flows | Installation needs to match how Pi users discover and adopt reusable packages | - Pending |
 | Package will be invoked through `/skill` | The experience should feel native inside Pi instead of requiring a separate CLI-first workflow | - Pending |
 | v1 review outputs will include `REVIEW.md` plus a markdown checklist TODO artifact in `.planning/` | Users want persistent, actionable outputs they can read and hand off | - Pending |
-| v1 will support both whole-repo and changed-files-focused review modes | Different review moments need different scan scopes | - Pending |
+| v1 will support both whole-repo and changed-files-focused review modes | Different review moments need different scan scopes | Validated in Phase 3: Review Scope Modes |
 | v1 will target language-agnostic analysis | The package should be broadly useful across typical codebases | - Pending |
 | v1 excludes auto-fixing, PR/GitHub integration, and CI integration | Focus should stay on a strong local review workflow first | - Pending |
 
@@ -84,4 +84,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-19 after initialization*
+*Last updated: 2026-04-20 after Phase 3 completion*
