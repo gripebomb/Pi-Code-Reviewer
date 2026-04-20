@@ -33,6 +33,23 @@ Confidence legend: **HIGH** = directly supported by current project research or 
 
 None - discussion stayed within phase scope.
 
+## Environment Availability
+
+| Confidence | Item | Current Status | Planning Implication |
+| ---------- | ---- | -------------- | -------------------- |
+| **HIGH** | Node.js | `v22.13.1` available in this repo/session | Exceeds the recommended `>=20` floor, so modern ESM scripts and small Node-based validators are safe if needed. |
+| **HIGH** | npm | `11.6.2` available | `npm pack`, `npm install`, and npm-script-based validation can be first-class Phase 1 verification tools. |
+| **HIGH** | Pi CLI | `0.67.68` available | Local `pi install`, `pi list`, `pi -p`, and `/skill:name` smoke-test flows are available for artifact/discovery validation. |
+| **HIGH** | Package scaffold | **Absent** (`package.json` does not exist yet) | Phase 1 must create the package manifest before any npm-based validation can run. |
+| **HIGH** | Test framework | **Absent** (no Jest/Vitest/Pytest config or test tree) | Validation should start as shell/Node npm scripts, not by introducing a full test framework just for package/distribution checks. |
+| **HIGH** | Existing runtime code | **Absent** | This phase validates package metadata, tarball contents, installability, and docs rather than application logic. |
+| **HIGH** | Project constraints file | No `CLAUDE.md` present at repo root | There are no extra project-level locked constraints beyond the planning files already read. |
+| **HIGH** | Project skill indexes | No `.claude/skills/` or `.agents/skills/` directories present | There are no additional local skill conventions to account for in Phase 1 research. |
+
+- **HIGH:** The repository is currently planning-only (`.planning/`, `.pi/`, `GEMINI.md`), so Phase 1 validation must assume **everything needed for packaging and verification is Wave 0 work**.
+- **HIGH:** Because Pi, Node, and npm are already available locally, the plan should prefer **real artifact checks** over placeholder “to be verified later” tasks.
+- **MEDIUM:** A dedicated test runner like Vitest is still a valid later choice for Phase 2+, but it is unnecessary overhead for this package-foundation phase unless helper logic grows beyond simple install/pack/documentation checks.
+
 ## Phase Framing
 
 - **HIGH:** Phase 1 should ship the **smallest publishable Pi package** that Pi can discover as `/skill:code-reviewer`.
@@ -157,6 +174,73 @@ skills/
 - **HIGH:** The smoke test result proves discovery, not just file presence.
 - **HIGH:** If the package is not actually published to npm by the end of the phase, the plan must explicitly treat `DIST-01` as still blocked.
 
+## Validation Architecture
+
+- **HIGH:** Phase 1 should use **artifact-focused shell/Node validation**, not a full unit-test framework. The repo has no existing test runner, and the phase requirements are package/distribution/documentation checks.
+- **HIGH:** The validation contract should distinguish three classes of checks:
+  1. **Fast automated local checks** for metadata and docs
+  2. **Automated artifact/install checks** for packed tarball and `pi install -l`
+  3. **Auth-gated/manual smoke** for actual `/skill:code-reviewer` discovery until a stable headless Pi harness exists
+- **HIGH:** `DIST-01`, `DIST-02`, and `DIST-03` can all be mapped now, but **not all of them are fully satisfiable before package publication or before an authenticated Pi smoke harness exists**.
+
+### Recommended validation infrastructure for this phase
+
+| Property | Recommendation |
+| -------- | -------------- |
+| **Framework** | None initially - use npm scripts plus small shell/Node validators |
+| **Config file** | `package.json` scripts only (**Wave 0**, because `package.json` does not exist yet) |
+| **Fast task-level checks** | `npm run validate:metadata` and `npm run validate:docs` |
+| **Full phase validation** | `npm run validate:phase-01` |
+| **Estimated runtime** | Metadata/docs: ~1-5s; full pack/install validation: ~10-30s local |
+
+- **HIGH:** Do **not** introduce watch-mode tooling for this phase. All validation commands should be one-shot and automation-safe.
+- **HIGH:** A single full command should be enough for Nyquist/orchestrator usage after implementation:
+
+```bash
+npm run validate:phase-01
+```
+
+- **MEDIUM:** The cleanest Wave 0 shape is to add a small validator script set such as:
+  - `validate:metadata` - manifest and file-structure checks
+  - `validate:docs` - README/install/invocation checks
+  - `validate:phase-01` - pack, inspect, temp install, and Pi local-install smoke orchestration
+
+### Requirement-to-validation map
+
+| Requirement | Validation Type | Prescriptive Command | Status Today |
+| ----------- | --------------- | -------------------- | ------------ |
+| **DIST-03** User can identify how to install and invoke the skill from docs | **Fast automated** | `test -f README.md && grep -F "pi install npm:pi-code-reviewer" README.md && grep -F "npm install -g pi-code-reviewer" README.md && grep -F "/skill:code-reviewer" README.md` | **Wave 0 gap** until `README.md` exists |
+| **DIST-01** Publishable npm artifact contains required files | **Fast automated proxy** | `TARBALL="$(npm pack --silent)" && tar -tzf "$TARBALL" | grep -E '^package/(package\.json|README\.md|skills/code-reviewer/SKILL\.md|skills/code-reviewer/references/README\.md|skills/code-reviewer/assets/README\.md)$'` | **Wave 0 gap** until scaffold exists |
+| **DIST-01** User can install from npm registry | **Release-gated external check** | `TMP="$(mktemp -d)" && npm install --prefix "$TMP" pi-code-reviewer && test -f "$TMP/node_modules/pi-code-reviewer/skills/code-reviewer/SKILL.md"` | **Blocked** until package is actually published |
+| **DIST-02** User can install with `pi install` from the packed artifact path | **Automated** | `TARBALL="$(npm pack --silent)" && UNPACK_DIR="$(mktemp -d)" && tar -xzf "$TARBALL" -C "$UNPACK_DIR" && TEST_PROJECT="$(mktemp -d)" && (cd "$TEST_PROJECT" && pi install -l "$UNPACK_DIR/package" && test -f .pi/settings.json && grep -F "$UNPACK_DIR/package" .pi/settings.json >/dev/null)` | **Wave 0 gap** until scaffold exists |
+| **DIST-02 / D-10** Pi discovers `/skill:code-reviewer` after install | **Manual-only or auth-gated smoke** | `(cd "$TEST_PROJECT" && pi --no-session -p "/skill:code-reviewer")` | **Wave 0 gap** until scaffold exists and local Pi auth/smoke harness is available |
+
+### Wave 0 validation requirements
+
+- **HIGH:** Phase 1 needs a **minimal validation harness before normal execution can be considered Nyquist-ready**.
+- **HIGH:** The required Wave 0 deliverables are:
+  - `package.json` with non-watch validation scripts
+  - `README.md` with both install paths and `/skill:code-reviewer`
+  - `skills/code-reviewer/SKILL.md`
+  - real placeholder files under `skills/code-reviewer/references/` and `skills/code-reviewer/assets/`
+  - one repeatable full validation command, preferably `npm run validate:phase-01`
+- **MEDIUM:** No Jest/Vitest install is required for Wave 0. A shell script or tiny Node `.mjs` validator is sufficient and lower risk.
+- **MEDIUM:** If the team wants the discovery smoke to be CI-safe later, add a separate authenticated Pi harness in a later phase; do not block Phase 1 planning on inventing that infrastructure now.
+
+### Manual-only verification that should still be planned
+
+| Behavior | Requirement | Why Manual/Auth-Gated | Test Instructions |
+| -------- | ----------- | --------------------- | ----------------- |
+| `/skill:code-reviewer` visibly resolves after local install | `DIST-02`, `D-10` | Pi invocation depends on a configured provider/account and is not guaranteed to be available in every automated environment | In a clean temp project created from the packed artifact install, run `pi` and enter `/skill:code-reviewer`, or run `pi --no-session -p "/skill:code-reviewer"` if local auth is configured. Confirm the Phase 1 confirmation text appears rather than a missing-skill error. |
+| Install from real npm registry package name | `DIST-01` | Impossible before publication; depends on package-name availability and release step | After publish, run `npm install --prefix "$TMP" pi-code-reviewer` in a temp directory and confirm installed package contents match the validated tarball shape. |
+
+### Recommended quick-check cadence for the planner
+
+- **HIGH:** After manifest/layout tasks, run `npm run validate:metadata`.
+- **HIGH:** After README/doc tasks, run `npm run validate:docs`.
+- **HIGH:** After each plan wave, run `npm run validate:phase-01`.
+- **HIGH:** Before marking Phase 1 complete, run the full artifact flow **and** the auth-gated/manual `/skill:code-reviewer` smoke.
+
 ## Code Examples
 
 ### `package.json`
@@ -254,8 +338,12 @@ npm install -g pi-code-reviewer
 - `.planning/research/STACK.md`
 - `.planning/research/ARCHITECTURE.md`
 - `.planning/PROJECT.md`
+- `.pi/gsd/templates/VALIDATION.md`
+- `GEMINI.md`
 - `../../.nvm/versions/node/v22.13.1/lib/node_modules/@mariozechner/pi-coding-agent/docs/packages.md`
 - `../../.nvm/versions/node/v22.13.1/lib/node_modules/@mariozechner/pi-coding-agent/docs/skills.md`
 - `../../.nvm/versions/node/v22.13.1/lib/node_modules/@mariozechner/pi-coding-agent/README.md`
+- Local CLI help: `pi --help`
+- Local CLI help: `pi install --help`
 - `../../.nvm/versions/node/v22.13.1/lib/node_modules/@mariozechner/pi-coding-agent/examples/extensions/dynamic-resources/SKILL.md`
 - `../../.nvm/versions/node/v22.13.1/lib/node_modules/@mariozechner/pi-coding-agent/examples/sdk/04-skills.ts`
