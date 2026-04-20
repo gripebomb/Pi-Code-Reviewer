@@ -1,5 +1,8 @@
 # Assets
 
-This directory is reserved for future Pi Code Reviewer shipped assets.
+Report templates shipped with the code-reviewer skill.
 
-Phase 2 expands it with report templates and other packaged resources.
+## Files
+
+- **`review-template.md`** — Guidance and examples for the `.planning/REVIEW.md` report shape. Shows how category sections, severity groupings, and individual findings should be formatted.
+- **`todo-template.md`** — Guidance and examples for the `.planning/REVIEW-TODO.md` checklist shape. Shows how to format actionable TODO items grouped by category with severity badges.
