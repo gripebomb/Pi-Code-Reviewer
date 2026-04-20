@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01: Create npm package scaffold, Pi manifest, skill directory structure, and a unique Phase 1 smoke marker.
-- [ ] 01-02: Add installation and invocation documentation with marker-aware smoke-test instructions.
+- [x] 01-02: Add installation and invocation documentation with marker-aware smoke-test instructions.
 - [ ] 01-03: Verify packed/installable artifact contents, exact local validators, and preserved local smoke handoff.
 - [ ] 01-04: Publish the canonical package and verify registry npm/Pi installs plus marker-based discovery.
 
@@ -104,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 | ----- | -------------- | ------ | --------- |
-| 1. Package Foundation | 1/4 | In Progress | - |
+| 1. Package Foundation | 2/4 | In Progress | - |
 | 2. Skill Workflow Contract | 0/3 | Not started | - |
 | 3. Review Scope Modes | 0/3 | Not started | - |
 | 4. Analysis Engine | 0/3 | Not started | - |
