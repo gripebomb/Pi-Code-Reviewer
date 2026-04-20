@@ -75,8 +75,8 @@ Keep evidence attached to each finding so the final report stays concrete and ac
 ◆ Writing review report...
 
 Before writing, read references/output-contract.md for formatting rules.
-Read assets/review-template.md for report shape guidance.
-Read assets/todo-template.md for TODO checklist shape guidance.
+Before writing, read assets/review-template.md for report shape guidance.
+Before writing, read assets/todo-template.md for TODO checklist shape guidance.
 Write `.planning/REVIEW.md` using the required five-category structure.
 Write `.planning/REVIEW-TODO.md` as the action checklist derived from the findings.
 If `.planning/REVIEW.md` already existed before this run, add a note at the top stating: "This review replaces a previous review." In other words, the previous review was replaced rather than preserved.
