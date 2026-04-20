@@ -1,0 +1,8 @@
+{
+  "tarball": "/Users/dustinmidyett/github/pi-code-reviewer/pi-code-reviewer-0.1.0.tgz",
+  "unpackDir": "/var/folders/cl/f_zzvq0n4l7gj362k9dgpcmc0000gn/T/pi-code-reviewer-unpack-UyGGe7",
+  "packageDir": "/var/folders/cl/f_zzvq0n4l7gj362k9dgpcmc0000gn/T/pi-code-reviewer-unpack-UyGGe7/package",
+  "testProject": "/var/folders/cl/f_zzvq0n4l7gj362k9dgpcmc0000gn/T/pi-code-reviewer-test-project-2n6dMH",
+  "packageName": "pi-code-reviewer",
+  "expectedMarker": "PHASE_1_PACKAGE_MARKER: pi-code-reviewer"
+}

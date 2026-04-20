@@ -7,6 +7,11 @@
   "engines": {
     "node": ">=20"
   },
+  "scripts": {
+    "validate:metadata": "node scripts/validate-metadata.mjs",
+    "validate:docs": "node scripts/validate-docs.mjs",
+    "validate:phase-01": "node scripts/validate-phase-01.mjs"
+  },
   "files": ["README.md", "skills/"],
   "pi": {
     "skills": ["./skills"]
