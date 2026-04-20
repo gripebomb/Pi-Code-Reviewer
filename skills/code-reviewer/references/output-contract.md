@@ -15,6 +15,28 @@ The report at `.planning/REVIEW.md` must follow this structure.
 **Scope:** Whole repository
 ```
 
+```markdown
+# Code Review: [repository name]
+
+**Date:** [review date]
+**Scope:** Changed files — [N] files modified ([diff source])
+```
+
+```markdown
+# Code Review: [repository name]
+
+**Date:** [review date]
+**Scope:** Whole repository
+> **Note:** Git metadata unavailable — falling back to whole-repo review.
+```
+
+- File count is based on the final filtered readable candidate-path set, not the raw diff output.
+- Deleted files are excluded from the count and must not be treated as reviewable evidence targets.
+- Use one of these diff-source values only: branch diff against <default branch>, uncommitted changes, last commit.
+- A clean repo with a usable default-branch comparison must render `**Scope:** Whole repository` and must not fall through to `last commit`.
+- Use `last commit` only for the documented edge case where no usable default-branch comparison exists and the repo is otherwise clean.
+- Keep the fallback note on its own blockquote line; do not append it to the Scope line.
+
 If a previous `.planning/REVIEW.md` was replaced, add this note directly under the header:
 
 ```markdown

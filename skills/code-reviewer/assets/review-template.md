@@ -9,11 +9,44 @@ This template provides guidance for the shape of `.planning/REVIEW.md`. Use it a
 
 **Date:** [YYYY-MM-DD]
 **Scope:** Whole repository
-
-> **Note:** This review replaces a previous review that existed at this path.
 ```
 
-Include this note only if a previous `.planning/REVIEW.md` was overwritten by this run.
+```markdown
+# Code Review: [repository name]
+
+**Date:** [YYYY-MM-DD]
+**Scope:** Changed files — 7 files modified (branch diff against main)
+```
+
+```markdown
+# Code Review: [repository name]
+
+**Date:** [YYYY-MM-DD]
+**Scope:** Changed files — 2 files modified (uncommitted changes)
+```
+
+Use this header only for the documented edge case where no usable default-branch comparison exists and the repo is otherwise clean.
+
+```markdown
+# Code Review: [repository name]
+
+**Date:** [YYYY-MM-DD]
+**Scope:** Changed files — 3 files modified (last commit)
+```
+
+```markdown
+# Code Review: [repository name]
+
+**Date:** [YYYY-MM-DD]
+**Scope:** Whole repository
+> **Note:** Git metadata unavailable — falling back to whole-repo review.
+```
+
+Include this note only if a previous .planning/REVIEW.md was overwritten by this run.
+
+```markdown
+> **Note:** This review replaces a previous review that existed at this path.
+```
 
 ## Required Categories
 
