@@ -1,0 +1,5 @@
+test/
+scripts/
+.planning/
+.git/
+.gitignore

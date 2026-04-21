@@ -16,7 +16,10 @@
     "validate:phase-03:fixtures": "node scripts/validate-phase-03-fixtures.mjs",
     "validate:output": "node scripts/validate-output.mjs"
   },
-  "files": ["README.md", "skills/"],
+  "bin": {
+    "pi-code-reviewer": "./bin/pi-code-reviewer.js"
+  },
+  "files": ["README.md", "skills/", "bin/"],
   "pi": {
     "skills": ["./skills"]
   }
