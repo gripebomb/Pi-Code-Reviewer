@@ -115,8 +115,35 @@ Assess whether tests exist, what they cover, edge-case coverage, test quality, m
 ◆ Prioritizing findings...
 
 Before classifying, read references/severity-guidelines.md for High/Medium/Low criteria.
-Group findings by category, then classify them as High, Medium, or Low based on user impact, correctness risk, maintainability cost, and security exposure.
-Keep evidence attached to each finding so the final report stays concrete and actionable.
+
+### Classification Process
+
+For each finding from Phase 3:
+1. Review the evidence attached to the finding
+2. Apply severity-guidelines.md criteria:
+   - **High**: Immediate risk, broken behavior, security vulnerability, data loss
+   - **Medium**: Fragility, maintainability risk, significant improvement opportunity
+   - **Low**: Polish, incremental improvement, style inconsistency
+3. Consider context: the same pattern may be High in security-critical code and Low in utilities
+4. Adjust severity if cross-category relationships warrant it (e.g., untested security path → High)
+
+### Grouping and Ordering
+
+1. Group findings by category (Code Quality, Refactoring, Documentation, Security, Test Coverage)
+2. Within each category, group by severity: High → Medium → Low
+3. Within each severity level, order by impact (most impactful first)
+4. Omit a severity sub-section only when there are no findings at that level
+
+### Quality Checks
+
+Before proceeding to Phase 5, verify:
+- [ ] Every finding has a concrete file or path reference
+- [ ] Severity assignments align with severity-guidelines.md
+- [ ] No category is missing (even if empty)
+- [ ] Cross-category related findings reference each other
+- [ ] Evidence gaps are stated explicitly, not hidden
+
+If any check fails, revisit the relevant Phase 3 category evaluation.
 
 ## Phase 5: Write Report
 
