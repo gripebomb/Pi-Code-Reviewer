@@ -32,6 +32,33 @@ After installing the package through Pi, use the canonical skill command:
 
 Phase 1 validates installation/discovery now and does not promise the full review workflow yet. The full repository review experience arrives in Phase 2.
 
+## Output Format
+
+After running the code reviewer, you'll find two files in `.planning/`:
+
+### REVIEW.md
+
+A comprehensive review report with:
+
+- **Summary table** — counts of findings per category and severity at a glance
+- **Category sections** — detailed findings grouped by Code Quality, Refactoring, Documentation, Security, and Test Coverage
+- **Prioritized Issue Table** — all findings sorted by severity (High → Medium → Low) so you can decide what to fix first
+
+### REVIEW-TODO.md
+
+An actionable checklist derived from the findings:
+
+- Grouped by category
+- Sorted by severity within each category
+- Each item includes a severity badge, file reference, and impact note
+- Check off items as you fix them, or hand the list to another agent
+
+### Severity Levels
+
+- **High** — Immediate risk or broken behavior. Fix first.
+- **Medium** — Fragility or significant improvement opportunity. Fix next.
+- **Low** — Polish or incremental improvement. Fix when convenient.
+
 ## Smoke test
 
 Use `/skill:code-reviewer` immediately after installation to confirm Pi can resolve the skill. For the detailed local smoke-test checklist, including the marker-based verification flow used in Phase 1 validation, see [./skills/code-reviewer/references/INSTALL.md](./skills/code-reviewer/references/INSTALL.md).

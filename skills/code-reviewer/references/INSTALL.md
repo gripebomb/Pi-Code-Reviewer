@@ -53,3 +53,24 @@ Ask the active skill to reply with the exact Phase 1 package marker and package 
 - `pi-code-reviewer`
 
 Generic skill resolution without the marker is not a pass, because another installed `code-reviewer` skill could false-pass the smoke test.
+
+## Smoke Test
+
+After installation, verify the skill produces prioritized output:
+
+1. Run the skill against a test repository:
+   ```
+   /skill:code-reviewer
+   ```
+
+2. Check that `.planning/REVIEW.md` contains:
+   - A `## Summary` table with category and severity counts
+   - Five category sections with findings
+   - A `## Prioritized Issue Table` sorted by severity
+
+3. Check that `.planning/REVIEW-TODO.md` contains:
+   - Categorized checklist items
+   - Severity badges (`**[High]**`, `**[Medium]**`, `**[Low]**`)
+   - File references and impact notes
+
+4. Verify the Summary table counts match the actual findings in the category sections.
