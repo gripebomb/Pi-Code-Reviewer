@@ -1,0 +1,37 @@
+{
+  "name": "pi-code-reviewer",
+  "version": "0.1.0",
+  "description": "Pi-installable code review skill package.",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "skill",
+    "code-review"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate:metadata": "node scripts/validate-metadata.mjs",
+    "validate:docs": "node scripts/validate-docs.mjs",
+    "validate:phase-01": "node scripts/validate-phase-01.mjs",
+    "validate:phase-02": "node scripts/validate-phase-02.mjs",
+    "validate:phase-03": "node scripts/validate-phase-03.mjs && node scripts/validate-phase-03-fixtures.mjs",
+    "validate:phase-03:fixtures": "node scripts/validate-phase-03-fixtures.mjs",
+    "validate:output": "node scripts/validate-output.mjs"
+  },
+  "bin": {
+    "pi-code-reviewer": "bin/pi-code-reviewer.js"
+  },
+  "files": [
+    "README.md",
+    "skills/",
+    "bin/"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ]
+  }
+}
