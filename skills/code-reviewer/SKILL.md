@@ -152,9 +152,28 @@ If any check fails, revisit the relevant Phase 3 category evaluation.
 Before writing, read references/output-contract.md for formatting rules.
 Before writing, read assets/review-template.md for report shape guidance.
 Before writing, read assets/todo-template.md for TODO checklist shape guidance.
-Write `.planning/REVIEW.md` using the required five-category structure.
-Write `.planning/REVIEW-TODO.md` as the action checklist derived from the findings.
+
+### Report Structure
+
+Write `.planning/REVIEW.md` in this order:
+
+1. **Header** — repository name, date, scope (per output-contract.md)
+2. **Summary** — category × severity count table with totals
+3. **Category Sections** — Code Quality, Refactoring, Documentation, Security, Test Coverage (each with summary assessment + findings grouped by severity)
+4. **Prioritized Issue Table** — flat table of all findings sorted by severity (High → Medium → Low), then by category within each severity
+
+Write `.planning/REVIEW-TODO.md` as the action checklist derived from the findings, grouped by category with severity badges.
+
 If `.planning/REVIEW.md` already existed before this run, add a note at the top stating: "This review replaces a previous review." In other words, the previous review was replaced rather than preserved.
+
+### Quality Checks
+
+Before finishing, verify:
+- [ ] Summary table counts match actual findings in category sections
+- [ ] Prioritized Issue Table includes every finding from category sections
+- [ ] Sort order is correct: High severity first, then Medium, then Low; alphabetical by category within each severity
+- [ ] Every finding in the table has a brief 3-8 word summary and a location reference
+- [ ] TODO checklist items match findings and are sorted by severity within each category
 
 ## Rules
 
