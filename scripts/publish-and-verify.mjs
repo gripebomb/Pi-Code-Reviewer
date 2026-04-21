@@ -40,6 +40,19 @@ function run(command, args, options = {}) {
   return result;
 }
 
+function runInteractive(command, args, options = {}) {
+  const result = spawnSync(command, args, {
+    cwd: root,
+    encoding: 'utf8',
+    stdio: 'inherit',
+    ...options,
+  });
+  if (result.error) {
+    throw result.error;
+  }
+  return result;
+}
+
 function step(name) {
   console.log(`\n▶ ${name}`);
 }
@@ -162,14 +175,12 @@ if (!allPassed) {
   fail('Skipping publish due to earlier failures');
 } else {
   try {
-    const publishResult = run('npm', ['publish', '--access', 'public']);
+    console.log('  Handing off npm publish to your terminal so the auth URL is shown unredacted.');
+    const publishResult = runInteractive('npm', ['publish', '--access', 'public']);
     if (publishResult.status === 0) {
       pass('Package published successfully');
-      if (publishResult.stdout) {
-        console.log(`  ${publishResult.stdout.trim()}`);
-      }
     } else {
-      fail(`npm publish failed: ${publishResult.stderr || publishResult.stdout}`);
+      fail(`npm publish failed with exit code ${publishResult.status ?? 'unknown'}`);
     }
   } catch (err) {
     fail(`npm publish error: ${err.message}`);
