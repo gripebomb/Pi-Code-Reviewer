@@ -13,7 +13,8 @@ No action items.
 
 ## Documentation
 
-No action items.
+- [ ] **[Low]** Add one-sentence description to README (`README.md`)
+  The README contains only the project title. A brief description helps discovery.
 
 ## Security
 
