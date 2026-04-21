@@ -34,10 +34,18 @@ Confirm where review outputs will be written: .planning/REVIEW.md and .planning/
 
 ◆ Gathering evidence from repository...
 
+Before gathering evidence, read `references/evidence-gathering.md` for the exact file read order, depth triggers, and sufficiency criteria.
+
 Read representative source files, configuration, tests, scripts, and docs.
 Build an evidence-based understanding of the project structure, technology stack, code patterns, testing story, documentation quality, and security-relevant configuration.
 Look for concrete file paths, symbols, and examples that support later findings.
-Prefer breadth first, then go deeper where code appears risky, central, fragile, or under-documented.
+
+Build an evidence map organized by category with file-path-indexed observations. Tag each observation with a preliminary severity signal (potential High/Medium/Low).
+
+Prefer breadth first: read representative files across all categories before deep-diving into any single file. Then go deeper where code appears risky, central, fragile, or under-documented.
+
+When evidence is limited for a category, record the evidence gap explicitly rather than forcing findings.
+
 Phase 2 gathers evidence from the resolved `candidate_paths` and only expands outside that set for minimal surrounding context needed to explain a finding.
 
 ## Phase 3: Evaluate Categories
@@ -107,6 +115,9 @@ If `.planning/REVIEW.md` already existed before this run, add a note at the top 
 - `references/severity-guidelines.md` — how to classify High, Medium, and Low findings
 - `references/output-contract.md` — exact report structure and formatting rules
 - `references/scope-detection.md` — ordered scope detection, default-branch comparison rules, edge-case last-commit fallback, traversal filters, and scope header wording
+- `references/evidence-gathering.md` — evidence gathering algorithm, file read order, depth triggers, sufficiency criteria, and evidence map format
+- `references/category-analysis-guide.md` — operationalized inspection steps, concrete signals, and evidence formats for all five review categories
+- `references/evidence-synthesis.md` — rules for combining observations into findings: concrete over vague, pattern over instance, impact over count, uncertainty explicit, contextual severity, cross-category consolidation, and finding format
 - `references/INSTALL.md` — installation instructions and smoke-test steps
 - `assets/review-template.md` — report shape guidance and example
 - `assets/todo-template.md` — TODO checklist shape guidance and example
