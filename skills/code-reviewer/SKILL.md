@@ -50,8 +50,40 @@ Phase 2 gathers evidence from the resolved `candidate_paths` and only expands ou
 
 ## Phase 3: Evaluate Categories
 
-Before evaluating, read references/review-rubric.md for detailed evaluation criteria.
+◆ Evaluating categories...
+
+Before evaluating, read references/review-rubric.md for evaluation criteria and references/category-analysis-guide.md for inspection steps.
 Evaluate all five categories even if some have few or no findings.
+
+Use the evidence map from Phase 2 as the primary input. For each category:
+1. Review the evidence tagged for that category
+2. Apply the inspection steps from category-analysis-guide.md
+3. Synthesize observations into findings using evidence-synthesis.md rules
+4. Assign preliminary severity based on severity-guidelines.md
+5. Record the finding with concrete file/path references
+
+### Evaluation Order
+
+Evaluate categories in this order:
+1. **Code Quality** — foundational issues affect all other categories
+2. **Refactoring** — structural issues inform security and test coverage assessment
+3. **Documentation** — docs gaps may explain uncertainty in other categories
+4. **Security** — security findings may elevate severity of related quality issues
+5. **Test Coverage** — test gaps often correlate with quality and security risks
+
+### Cross-Category Awareness
+
+After evaluating all categories, review for cross-category relationships:
+- A security-critical path with no tests → elevate test coverage severity
+- A complex function with no documentation → note in both Code Quality and Documentation
+- Repeated patterns across categories → consolidate into a single finding with cross-references
+
+### Uncertainty Handling
+
+If a category has limited evidence after gathering:
+1. State the evidence gap explicitly in the summary assessment
+2. Do not invent findings to fill the category
+3. Example: "No test files were found in the repository. Tests may be absent, generated elsewhere, or stored outside the scanned scope."
 
 ### Code Quality
 
