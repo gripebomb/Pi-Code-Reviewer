@@ -107,3 +107,75 @@ The codebase shows generally clean patterns with some inconsistency in error han
 For categories with no significant findings, write a positive summary and omit the severity sub-sections. Example: `The project has comprehensive test coverage. Unit and integration tests cover all major modules with meaningful assertions.`
 
 Findings should be conversational and explain why something matters. Don't just state what exists — explain the impact and what could go wrong. Include enough context that someone reading only the report can understand and prioritize the issue.
+
+## Complete Prioritized Report Example
+
+```markdown
+# Code Review: my-project
+
+**Date:** 2026-04-20
+**Scope:** Whole repository
+
+## Summary
+
+| Category | High | Medium | Low | Total |
+|----------|------|--------|-----|-------|
+| Code Quality | 1 | 2 | 1 | 4 |
+| Refactoring | 0 | 1 | 2 | 3 |
+| Documentation | 0 | 0 | 1 | 1 |
+| Security | 1 | 0 | 0 | 1 |
+| Test Coverage | 0 | 1 | 1 | 2 |
+| **Total** | **2** | **4** | **5** | **11** |
+
+## Code Quality
+
+The codebase is generally readable, but error handling is inconsistent in a few important paths.
+
+### High
+
+- **Unhandled promise rejection in `parseConfig()`** (`src/config.ts:42`)
+  The error path isn't handled — if the config file is malformed, the promise rejection
+  will crash the process. Wrap in try/catch or add a `.catch()` handler.
+
+### Medium
+
+- **Mixed import styles** (`src/utils/*.ts`)
+  Some files use `import type { ... }` and others use `import { ... }` for type-only
+  imports. Standardizing on `import type` would make intent clearer.
+
+### Low
+
+- **Console.log in production code** (`src/server.ts:87`)
+  A debug `console.log` statement appears to be left in the server startup path.
+  Consider removing it or gating it behind a debug flag.
+
+## Refactoring
+
+## Documentation
+
+## Security
+
+### High
+
+- **Hardcoded API key in configuration** (`src/config.ts:42`)
+  The API key is stored directly in source code. Move to environment variables or a
+  secrets manager.
+
+## Test Coverage
+
+## Prioritized Issue Table
+
+| Priority | Category | Finding | Location |
+|----------|----------|---------|----------|
+| **High** | Code Quality | Unhandled promise rejection | `src/config.ts:42` |
+| **High** | Security | Hardcoded API key in config | `src/config.ts:42` |
+| **Medium** | Code Quality | Mixed import styles | `src/utils/*.ts` |
+| **Medium** | Refactoring | Duplicated validation logic | `src/auth.ts:30`, `src/api.ts:45` |
+| **Medium** | Test Coverage | Missing error path tests | `tests/app.test.ts` |
+| **Low** | Code Quality | Debug console.log left in code | `src/server.ts:87` |
+| **Low** | Refactoring | Unused helper function | `src/helpers.ts:12` |
+| **Low** | Documentation | Missing usage examples | `README.md` |
+| **Low** | Test Coverage | Brittle assertion pattern | `tests/utils.test.ts:8` |
+| **Low** | Test Coverage | Missing edge case coverage | `tests/app.test.ts` |
+```
+```
