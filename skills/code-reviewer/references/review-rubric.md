@@ -5,6 +5,12 @@ Use it to decide what evidence matters, not as a checklist that forces findings 
 Prefer concrete observations tied to files, commands, tests, docs, or configuration over vague impressions.
 A healthy category can still be documented with a short summary when the evidence is strong and no meaningful findings emerge.
 
+## Related Guides
+
+- `references/category-analysis-guide.md` — operationalized inspection steps for each category
+- `references/evidence-synthesis.md` — rules for combining observations into findings
+- `references/evidence-gathering.md` — how to gather and organize evidence before evaluation
+
 ## Code Quality
 
 Evaluate:
@@ -19,6 +25,8 @@ Evaluate:
 Signals to notice:
 - Repeated bug patterns across files often point to a broader quality issue instead of an isolated mistake.
 - Strong code quality usually shows up as predictable structure, readable control flow, and obvious error paths.
+
+See `references/category-analysis-guide.md` for specific inspection steps and signals.
 
 ## Refactoring
 
@@ -35,6 +43,8 @@ Signals to notice:
 - Refactoring findings should explain how a structural change would reduce duplication, clarify responsibilities, or lower future bug risk.
 - Avoid recommending abstraction for its own sake; note when the current simple design is appropriate.
 
+See `references/category-analysis-guide.md` for specific inspection steps and signals.
+
 ## Documentation
 
 Evaluate:
@@ -49,6 +59,8 @@ Evaluate:
 Signals to notice:
 - Missing docs matter most when they slow onboarding, hide required setup, or make public behavior hard to use correctly.
 - Strong documentation is accurate, discoverable, and matched to how the project is actually operated today.
+
+See `references/category-analysis-guide.md` for specific inspection steps and signals.
 
 ## Security
 
@@ -65,6 +77,8 @@ Signals to notice:
 - Security findings should distinguish between confirmed vulnerabilities, risky patterns, and evidence gaps that need follow-up.
 - Call out when a repository lacks enough visible context to fully verify a security control.
 
+See `references/category-analysis-guide.md` for specific inspection steps and signals.
+
 ## Test Coverage
 
 Evaluate:
@@ -79,6 +93,8 @@ Evaluate:
 Signals to notice:
 - Test coverage is not only about count; it is also about whether important behavior, regressions, and failure paths are protected.
 - If tests are absent, say so directly and note the practical risk that creates for future changes.
+
+See `references/category-analysis-guide.md` for specific inspection steps and signals.
 
 ## Uncertainty Handling
 

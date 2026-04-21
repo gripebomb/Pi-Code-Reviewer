@@ -44,6 +44,37 @@ If a previous `.planning/REVIEW.md` was replaced, add this note directly under t
 > **Note:** This review replaces a previous review that existed at this path.
 ```
 
+## Path Reference Requirements
+
+Every finding MUST include a concrete file or path reference. This is required for actionable output.
+
+### Required Format
+
+- **With line number**: `path/to/file.ext:42`
+- **Without line number**: `path/to/file.ext`
+- **Directory wildcard**: `src/utils/*.ts` (for systemic issues across multiple files)
+- **Scope description**: "across all route handlers" (only when truly unlocatable)
+
+### Rules
+
+1. Include line numbers when the specific line is visible in the evidence
+2. Use directory wildcards for issues that appear in multiple files with the same pattern
+3. Never omit path entirely unless the issue is truly systemic and cannot be localized
+4. Use backticks for all path references
+5. Verify that referenced paths exist in the reviewed scope
+
+### Examples
+
+**Good**:
+- `src/config.ts:42` — specific line with the issue
+- `src/utils/*.ts` — pattern repeated across multiple utility files
+- `tests/` — missing tests for the entire test directory
+
+**Bad**:
+- "the config file" — not specific enough
+- "some utility files" — no path reference
+- Missing path entirely — not actionable
+
 ### Category Sections
 
 The report contains exactly five sections in this order:
@@ -84,6 +115,8 @@ Rules:
 - Omit `### High`, `### Medium`, or `### Low` only when there are no findings at that level.
 - Each finding should include a bold title, a file or path reference in backticks when evidence supports it, and a multi-line description with context.
 - The tone should be conversational, actionable, and specific rather than mechanical.
+- Every finding must include a file or path reference in backticks when evidence supports it.
+- Systemic issues may use directory wildcards or scope descriptions.
 
 ### Example Section
 
