@@ -76,9 +76,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: Define category-specific review heuristics and severity guidance.
-- [ ] 04-02: Implement evidence gathering and synthesis for code, docs, config, and tests.
-- [ ] 04-03: Validate findings quality and path references against representative fixtures.
+- [x] 04-01: Define category-specific review heuristics and severity guidance.
+- [x] 04-02: Implement evidence gathering and synthesis for code, docs, config, and tests.
+- [x] 04-03: Validate findings quality and path references against representative fixtures.
 
 ### Phase 5: Actionable Outputs & Release Readiness
 **Goal**: Users get prioritized review artifacts they can use immediately to decide what to fix next, and the finished package is ready for final npm release validation.
