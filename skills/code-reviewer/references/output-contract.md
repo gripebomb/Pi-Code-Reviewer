@@ -75,6 +75,29 @@ Every finding MUST include a concrete file or path reference. This is required f
 - "some utility files" — no path reference
 - Missing path entirely — not actionable
 
+### Summary Section
+
+Immediately after the header, include a summary table showing total findings per category and severity.
+
+```markdown
+## Summary
+
+| Category | High | Medium | Low | Total |
+|----------|------|--------|-----|-------|
+| Code Quality | 1 | 2 | 1 | 4 |
+| Refactoring | 0 | 1 | 2 | 3 |
+| Documentation | 0 | 0 | 1 | 1 |
+| Security | 1 | 0 | 0 | 1 |
+| Test Coverage | 0 | 1 | 1 | 2 |
+| **Total** | **2** | **4** | **5** | **11** |
+```
+
+Rules:
+- Include this section in every review, even if all counts are zero.
+- Use bold for the Total row.
+- Categories must appear in the standard order: Code Quality, Refactoring, Documentation, Security, Test Coverage.
+- If a category has no findings, show `0` in each severity column.
+
 ### Category Sections
 
 The report contains exactly five sections in this order:
@@ -110,6 +133,8 @@ Each category section opens with a 1-2 sentence summary assessment, then lists f
 ```
 
 Rules:
+- The Summary section must appear immediately after the header, before any category section.
+- Category sections must maintain the standard order: Code Quality, Refactoring, Documentation, Security, Test Coverage.
 - Every category must appear even if it has no significant findings.
 - For an empty category, write a short summary assessment such as: "No significant documentation issues found. The current docs cover the main contributor and user flows." Then omit the severity sub-sections.
 - Omit `### High`, `### Medium`, or `### Low` only when there are no findings at that level.
@@ -143,6 +168,35 @@ The codebase is generally readable, but error handling is inconsistent in a few 
   A debug `console.log` statement appears to be left in the server startup path.
   Consider removing it or gating it behind a debug flag.
 ```
+
+## Prioritized Issue Table
+
+After the five category sections, include a flat prioritized table that lists all findings sorted by severity first (High → Medium → Low), then by category within each severity level.
+
+```markdown
+## Prioritized Issue Table
+
+| Priority | Category | Finding | Location |
+|----------|----------|---------|----------|
+| **High** | Security | Hardcoded API key in config | `src/config.ts:42` |
+| **High** | Code Quality | Unhandled promise rejection | `src/app.ts:15` |
+| **Medium** | Code Quality | Mixed import styles | `src/utils/*.ts` |
+| **Medium** | Refactoring | Duplicated validation logic | `src/auth.ts:30`, `src/api.ts:45` |
+| **Medium** | Test Coverage | Missing error path tests | `tests/app.test.ts` |
+| **Low** | Code Quality | Debug console.log left in code | `src/server.ts:87` |
+| **Low** | Refactoring | Unused helper function | `src/helpers.ts:12` |
+| **Low** | Documentation | Missing usage examples | `README.md` |
+| **Low** | Test Coverage | Brittle assertion pattern | `tests/utils.test.ts:8` |
+| **Low** | Test Coverage | Missing edge case coverage | `tests/app.test.ts` |
+```
+
+Rules:
+- Every finding from the category sections must appear in this table.
+- Sort order: High severity first (alphabetical by category within High), then Medium (alphabetical by category), then Low (alphabetical by category).
+- The "Finding" column should be a brief 3-8 word summary of the issue.
+- The "Location" column should include the backtick-wrapped file/path reference from the finding.
+- If a finding spans multiple locations, list all separated by commas.
+- This table is what users scan first to decide what to fix next.
 
 ## REVIEW-TODO.md Structure
 
