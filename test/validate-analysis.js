@@ -15,35 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// ─── CLI ────────────────────────────────────────────────────────────────────
-
-const [reviewPath, fixtureDir] = process.argv.slice(2);
-
-if (!reviewPath || !fixtureDir) {
-  console.error('Usage: node test/validate-analysis.js <review.md> <fixture-dir>');
-  process.exit(1);
-}
-
-if (!fs.existsSync(reviewPath)) {
-  console.error(`Review file not found: ${reviewPath}`);
-  process.exit(1);
-}
-
-if (!fs.existsSync(fixtureDir)) {
-  console.error(`Fixture directory not found: ${fixtureDir}`);
-  process.exit(1);
-}
-
-const reviewContent = fs.readFileSync(reviewPath, 'utf8');
-const lines = reviewContent.split('\n');
-
 // ─── State ──────────────────────────────────────────────────────────────────
-
-const results = {
-  structure: { passed: true, issues: [] },
-  paths: { passed: true, issues: [] },
-  severity: { passed: true, issues: [] },
-};
 
 const CATEGORIES = [
   'Code Quality',
@@ -57,15 +29,15 @@ const SEVERITIES = ['High', 'Medium', 'Low'];
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-function findSection(startIdx, headingPattern) {
+function findSection(startIdx, headingPattern, lines) {
   for (let i = startIdx; i < lines.length; i++) {
     if (headingPattern.test(lines[i])) return i;
   }
   return -1;
 }
 
-function getSectionRange(startIdx, headingRegex) {
-  const start = findSection(startIdx, headingRegex);
+function getSectionRange(startIdx, headingRegex, lines) {
+  const start = findSection(startIdx, headingRegex, lines);
   if (start === -1) return null;
   // Find next ## heading or end of file
   let end = lines.length;
@@ -133,15 +105,16 @@ function pathExistsInFixture(fixtureBase, refPath) {
 
 // ─── 1. Validate Structure ─────────────────────────────────────────────────
 
-function validateStructure() {
-  console.log('\n📋 STRUCTURE VALIDATION\n');
+function validateStructure(reviewContent) {
+  const lines = reviewContent.split('\n');
+  const issues = [];
+  let passed = true;
 
   for (const category of CATEGORIES) {
-    const range = getSectionRange(0, new RegExp(`^##\\s+${category}$`));
+    const range = getSectionRange(0, new RegExp(`^##\\s+${category}$`), lines);
     if (!range) {
-      results.structure.issues.push(`Missing category section: ${category}`);
-      results.structure.passed = false;
-      console.log(`  ❌ Missing category: ${category}`);
+      issues.push(`Missing category section: ${category}`);
+      passed = false;
       continue;
     }
 
@@ -165,20 +138,15 @@ function validateStructure() {
       // Allow if section is very short (edge case: no findings)
       const hasFindings = extractFindings(range.content).length > 0;
       if (hasFindings) {
-        results.structure.issues.push(`${category}: missing summary assessment`);
-        results.structure.passed = false;
-        console.log(`  ❌ ${category}: missing summary assessment`);
-      } else {
-        console.log(`  ⚠️  ${category}: no findings (summary check skipped)`);
+        issues.push(`${category}: missing summary assessment`);
+        passed = false;
       }
-    } else {
-      console.log(`  ✅ ${category}: section + summary present`);
     }
   }
 
   // Check severity sub-sections are omitted only when empty
   for (const category of CATEGORIES) {
-    const range = getSectionRange(0, new RegExp(`^##\\s+${category}$`));
+    const range = getSectionRange(0, new RegExp(`^##\\s+${category}$`), lines);
     if (!range) continue;
 
     const sectionLines = range.content.split('\n');
@@ -193,24 +161,21 @@ function validateStructure() {
 
     for (const sev of presentSeverities) {
       if (!severitiesWithFindings.has(sev)) {
-        results.structure.issues.push(`${category}: ### ${sev} is present but has no findings`);
-        results.structure.passed = false;
-        console.log(`  ❌ ${category}: ### ${sev} has no findings (should be omitted)`);
+        issues.push(`${category}: ### ${sev} is present but has no findings`);
+        passed = false;
       }
     }
   }
 
-  if (results.structure.passed) {
-    console.log('\n  ✅ Structure checks PASSED');
-  } else {
-    console.log(`\n  ❌ Structure checks FAILED (${results.structure.issues.length} issues)`);
-  }
+  return { passed, issues };
 }
 
 // ─── 2. Validate Path References ────────────────────────────────────────────
 
-function validatePathReferences() {
-  console.log('\n📁 PATH REFERENCE VALIDATION\n');
+function validatePathReferences(reviewContent, fixtureDir) {
+  const lines = reviewContent.split('\n');
+  const issues = [];
+  let passed = true;
 
   let totalFindings = 0;
   let findingsWithPaths = 0;
@@ -218,7 +183,7 @@ function validatePathReferences() {
   const invalidPaths = [];
 
   for (const category of CATEGORIES) {
-    const range = getSectionRange(0, new RegExp(`^##\\s+${category}$`));
+    const range = getSectionRange(0, new RegExp(`^##\\s+${category}$`), lines);
     if (!range) continue;
 
     const findings = extractFindings(range.content);
@@ -242,46 +207,31 @@ function validatePathReferences() {
 
   const pathRate = totalFindings > 0 ? (findingsWithPaths / totalFindings) * 100 : 0;
 
-  console.log(`  Total findings: ${totalFindings}`);
-  console.log(`  Findings with paths: ${findingsWithPaths} (${pathRate.toFixed(1)}%)`);
-  console.log(`  Findings without paths: ${findingsWithoutPaths}`);
-
   if (invalidPaths.length > 0) {
-    results.paths.passed = false;
-    results.paths.issues.push(`${invalidPaths.length} invalid path reference(s)`);
-    console.log(`\n  ❌ Invalid paths (${invalidPaths.length}):`);
-    for (const inv of invalidPaths) {
-      console.log(`     - ${inv.path} (${inv.category})`);
-    }
-  } else {
-    console.log(`  ✅ All path references resolve correctly`);
+    passed = false;
+    issues.push(`${invalidPaths.length} invalid path reference(s)`);
   }
 
   if (totalFindings > 0 && pathRate < 80) {
-    results.paths.passed = false;
-    results.paths.issues.push(`Path reference rate ${pathRate.toFixed(1)}% is below 80% threshold`);
-    console.log(`  ❌ Path reference rate below 80% threshold`);
-  } else if (totalFindings > 0) {
-    console.log(`  ✅ Path reference rate meets 80% threshold`);
+    passed = false;
+    issues.push(`Path reference rate ${pathRate.toFixed(1)}% is below 80% threshold`);
   }
 
-  if (results.paths.passed) {
-    console.log('\n  ✅ Path checks PASSED');
-  } else {
-    console.log(`\n  ❌ Path checks FAILED (${results.paths.issues.length} issues)`);
-  }
+  return { passed, issues, totalFindings, findingsWithPaths, findingsWithoutPaths, pathRate, invalidPaths };
 }
 
 // ─── 3. Validate Severity ───────────────────────────────────────────────────
 
-function validateSeverity() {
-  console.log('\n⚠️  SEVERITY VALIDATION\n');
+function validateSeverity(reviewContent) {
+  const lines = reviewContent.split('\n');
+  const issues = [];
+  let passed = true;
 
   const counts = {};
   for (const cat of CATEGORIES) counts[cat] = { High: 0, Medium: 0, Low: 0 };
 
   for (const category of CATEGORIES) {
-    const range = getSectionRange(0, new RegExp(`^##\\s+${category}$`));
+    const range = getSectionRange(0, new RegExp(`^##\\s+${category}$`), lines);
     if (!range) continue;
 
     const findings = extractFindings(range.content);
@@ -290,75 +240,74 @@ function validateSeverity() {
     }
   }
 
-  // Print counts table
-  console.log('  Findings per category/severity:');
-  console.log('  ' + '-'.repeat(55));
-  console.log(`  ${'Category'.padEnd(18)} ${'High'.padStart(6)} ${'Medium'.padStart(8)} ${'Low'.padStart(6)}`);
-  console.log('  ' + '-'.repeat(55));
-  for (const cat of CATEGORIES) {
-    const { High, Medium, Low } = counts[cat];
-    console.log(`  ${cat.padEnd(18)} ${String(High).padStart(6)} ${String(Medium).padStart(8)} ${String(Low).padStart(6)}`);
-  }
-  console.log('  ' + '-'.repeat(55));
-
   // Flag categories with only High findings (possible severity inflation)
   for (const cat of CATEGORIES) {
     const { High, Medium, Low } = counts[cat];
     const total = High + Medium + Low;
     if (total > 0 && High > 0 && Medium === 0 && Low === 0) {
-      results.severity.issues.push(`${cat}: only High findings — possible severity inflation`);
-      results.severity.passed = false;
-      console.log(`\n  ⚠️  ${cat}: only High findings — possible severity inflation`);
+      issues.push(`${cat}: only High findings — possible severity inflation`);
+      passed = false;
     }
   }
 
   // Flag categories with no findings but missing summary
   for (const cat of CATEGORIES) {
-    const range = getSectionRange(0, new RegExp(`^##\\s+${cat}$`));
+    const range = getSectionRange(0, new RegExp(`^##\\s+${cat}$`), lines);
     if (!range) continue;
     const { High, Medium, Low } = counts[cat];
     const total = High + Medium + Low;
     if (total === 0) {
       const hasSummary = range.content.split('\n').slice(1).some(l => l.trim().length > 10 && !/^###/.test(l));
       if (!hasSummary) {
-        results.severity.issues.push(`${cat}: no findings and no summary assessment`);
-        results.severity.passed = false;
-        console.log(`  ❌ ${cat}: no findings but missing summary assessment`);
+        issues.push(`${cat}: no findings and no summary assessment`);
+        passed = false;
       }
     }
   }
 
-  if (results.severity.passed) {
-    console.log('\n  ✅ Severity checks PASSED');
-  } else {
-    console.log(`\n  ❌ Severity checks FAILED (${results.severity.issues.length} issues)`);
-  }
+  return { passed, issues, counts };
 }
 
-// ─── Main ───────────────────────────────────────────────────────────────────
+// ─── Module Exports ─────────────────────────────────────────────────────────
 
-console.log(`\n═══════════════════════════════════════════════════════════════`);
-console.log(`  VALIDATE ANALYSIS`);
-console.log(`  Review:  ${reviewPath}`);
-console.log(`  Fixture: ${fixtureDir}`);
-console.log(`═══════════════════════════════════════════════════════════════`);
+module.exports = {
+  validateStructure,
+  validatePathReferences,
+  validateSeverity,
+  CATEGORIES,
+  SEVERITIES,
+  extractFindings,
+  extractBacktickPaths,
+  pathExistsInFixture,
+};
 
-validateStructure();
-validatePathReferences();
-validateSeverity();
+// ─── CLI ────────────────────────────────────────────────────────────────────
 
-// ─── Summary ────────────────────────────────────────────────────────────────
+if (require.main === module) {
+  const [reviewPath, fixtureDir] = process.argv.slice(2);
 
-const allPassed = results.structure.passed && results.paths.passed && results.severity.passed;
+  if (!reviewPath || !fixtureDir) {
+    console.error('Usage: node test/validate-analysis.js <review.md> <fixture-dir>');
+    process.exit(1);
+  }
 
-console.log('\n═══════════════════════════════════════════════════════════════');
-console.log('  SUMMARY');
-console.log('═══════════════════════════════════════════════════════════════');
-console.log(`  Structure:  ${results.structure.passed ? '✅ PASS' : '❌ FAIL'} (${results.structure.issues.length} issues)`);
-console.log(`  Paths:      ${results.paths.passed ? '✅ PASS' : '❌ FAIL'} (${results.paths.issues.length} issues)`);
-console.log(`  Severity:   ${results.severity.passed ? '✅ PASS' : '❌ FAIL'} (${results.severity.issues.length} issues)`);
-console.log('───────────────────────────────────────────────────────────────');
-console.log(`  OVERALL:    ${allPassed ? '✅ ALL CHECKS PASSED' : '❌ SOME CHECKS FAILED'}`);
-console.log('═══════════════════════════════════════════════════════════════\n');
+  if (!fs.existsSync(reviewPath)) {
+    console.error(`Review file not found: ${reviewPath}`);
+    process.exit(1);
+  }
 
-process.exit(allPassed ? 0 : 1);
+  if (!fs.existsSync(fixtureDir)) {
+    console.error(`Fixture directory not found: ${fixtureDir}`);
+    process.exit(1);
+  }
+
+  const reviewContent = fs.readFileSync(reviewPath, 'utf8');
+
+  const structureResult = validateStructure(reviewContent);
+  const pathsResult = validatePathReferences(reviewContent, fixtureDir);
+  const severityResult = validateSeverity(reviewContent);
+
+  const allPassed = structureResult.passed && pathsResult.passed && severityResult.passed;
+
+  process.exit(allPassed ? 0 : 1);
+}
